@@ -1,12 +1,9 @@
 import Comment from ".//Comment";
-import { Comment as CommentType } from "../../types";
+import { useCommentsContext } from "../../contexts/CommentsProvider";
 
-interface CommentsListProps {
-  comments: CommentType[];
-}
 
-const CommentsList = ({ comments }: CommentsListProps) => {
-
+const CommentsList = () => {
+  const { comments } = useCommentsContext();
   return (
     <>
       {comments.map((comment) => {
