@@ -1,5 +1,7 @@
 import { useCurrentUser } from "../../contexts/CurrentUser";
 import Avatar from "../general/Avatar";
+import { formatDistance } from "date-fns";
+
 interface CommentHeaderProps {
   avatar: string;
   username: string;
@@ -8,6 +10,8 @@ interface CommentHeaderProps {
 
 const CommentHeader = ({ avatar, username, timestamp }: CommentHeaderProps) => {
   const { currentUser } = useCurrentUser();
+
+  const date = formatDistance(new Date(timestamp), new Date(), { addSuffix: true });
   return (
     <div className="flex items-center gap-4 ">
 
@@ -16,7 +20,7 @@ const CommentHeader = ({ avatar, username, timestamp }: CommentHeaderProps) => {
       <a href={`#${username}`} className="font-bold capitalize text-lg">
         {username}
       </a>
-      <span className="text-gray-800">{timestamp}</span>
+      <span className="text-gray-800">{date}</span>
 
     </div>
   );

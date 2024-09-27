@@ -1,14 +1,8 @@
 import { createContext, PropsWithChildren, useContext, useReducer } from "react";
 import data from "../../data.json"
-import { Comment, Data } from "../types";
+import { Action, ActionType, Comment, CommentActionTypes, Data, RemoveCommentPayload, ReplyCommentPayload } from "../types";
 
 const { comments: initialComments } = data as Data;
-
-
-type ActionType =
-    | { type: "comments/addComment", payload: Comment }
-    | { type: "comments/removeComment", payload: Comment["id"] }
-    | { type: "comments/updateComment", payload: { id: Comment["id"], content: string } }
 
 interface Context {
     comments: Comment[];
@@ -17,14 +11,61 @@ interface Context {
 
 const CommentsContext = createContext<Context>({ comments: initialComments, dispatch: () => null })
 
+function updateReplies(comments: Comment[], action: Action<CommentActionTypes.ReplyComment, ReplyCommentPayload>): Comment[] {
+    return comments.map(comment => {
+        // Check if the current comment is the one we're replying to
+        if (comment.id === action.payload.id) {
+            return {
+                ...comment,
+                replies: [...comment.replies, action.payload.comment],
+            };
+        }
+
+        // If the comment has replies, recursively update them
+        if (comment.replies) {
+            return {
+                ...comment,
+                replies: updateReplies(comment.replies, action),
+            };
+        }
+
+        return comment;
+    });
+}
+
+function removeComment(comments: Comment[], action: Action<CommentActionTypes.RemoveComment, RemoveCommentPayload>): Comment[] {
+    return comments
+        .map(comment => {
+            // If the current comment matches the ID, return null to filter it out
+            if (comment.id === action.payload) {
+                return null;
+            }
+
+            // If the comment has replies, recursively update them
+            if (comment.replies) {
+                return {
+                    ...comment,
+                    replies: removeComment(comment.replies, action),
+                };
+            }
+
+            // Keep the comment if it doesn't match
+            return comment;
+        })
+        .filter(comment => comment !== null);
+
+}
+
 const reducer = (state: Comment[], action: ActionType): Comment[] => {
     switch (action.type) {
-        case "comments/addComment":
+        case CommentActionTypes.AddComment:
             return [...state, action.payload]
-        case "comments/removeComment":
-            return state.filter(comment => comment.id !== action.payload)
-        case "comments/updateComment":
+        case CommentActionTypes.RemoveComment:
+            return removeComment(state, action);
+        case CommentActionTypes.UpdateComment:
             return state.map(comment => comment.id === action.payload.id ? { ...comment, content: action.payload.content } : comment)
+        case CommentActionTypes.ReplyComment:
+            return updateReplies(state, action)
         default:
             return state
     }
@@ -51,8 +92,18 @@ export const useCommentsContext = () => {
     const { comments, dispatch } = context
 
     const addComment = (comment: Comment): void => {
-        dispatch({ type: "comments/addComment", payload: comment })
+        dispatch({ type: CommentActionTypes.AddComment, payload: comment })
+    }
+    const removeComment = (id: Comment["id"]): void => {
+        dispatch({ type: CommentActionTypes.RemoveComment, payload: id })
+    }
+    const updateComment = (id: Comment["id"], content: string): void => {
+        dispatch({ type: CommentActionTypes.UpdateComment, payload: { id, content } })
+    }
+    const replyComment = (id: Comment["id"], comment: Comment): void => {
+        dispatch({ type: CommentActionTypes.ReplyComment, payload: { id, comment } })
     }
 
-    return { comments, addComment }
+    return { comments, addComment, removeComment, updateComment, replyComment }
+
 }

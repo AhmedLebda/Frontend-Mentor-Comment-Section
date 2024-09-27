@@ -7,9 +7,21 @@ interface Input {
     "comment": string
 }
 
-const AddComment = () => {
+interface AddComment {
+    action: 'comment'
+}
+interface AddReply {
+    action: 'reply'
+    id: number
+    handleSubmitReply: () => void
+}
+
+type AddCommentProps = AddComment | AddReply;
+
+const AddComment = (props: AddCommentProps) => {
     const { currentUser } = useCurrentUser();
-    const { addComment } = useCommentsContext()
+
+    const { addComment, replyComment } = useCommentsContext();
 
     const {
         register,
@@ -28,9 +40,14 @@ const AddComment = () => {
             replies: [],
             user: currentUser,
         }
-        console.log(commentObject)
+        if (props.action === "reply") {
+            const { id, handleSubmitReply } = props
+            replyComment(id, commentObject)
+            handleSubmitReply()
+        } else {
+            addComment(commentObject)
+        }
 
-        addComment(commentObject);
         reset()
     };
 
