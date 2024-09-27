@@ -13,7 +13,7 @@ const CommentHeader = ({ avatar, username, timestamp }: CommentHeaderProps) => {
 
   const date = formatDistance(new Date(timestamp), new Date(), { addSuffix: true });
   return (
-    <div className="flex items-center gap-4 ">
+    <div className="flex items-center gap-4 flex-wrap">
 
       <Avatar src={avatar} alt={username} />
       {currentUser.username === username && <span className=" bg-blue-800 text-white rounded-md text-sm py-1 px-3">you</span>}

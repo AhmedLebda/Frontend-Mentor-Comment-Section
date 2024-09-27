@@ -4,6 +4,8 @@ import CommentScore from "./CommentScore";
 import CommentActions from "./CommentActions";
 import { Comment as CommentProps } from "../../types";
 
+interface CommentActions { onReplyClick: (id: number) => void, onEditClick: (id: number) => void }
+
 const Comment = ({
   id,
   score,
@@ -11,10 +13,10 @@ const Comment = ({
   createdAt,
   content,
   replyingTo,
-  onReplyClick
-}: CommentProps & { onReplyClick: (id: number) => void }) => {
-  const { username, image } = user;
-  const avatar = image.png;
+  onReplyClick,
+  onEditClick
+}: CommentProps & CommentActions) => {
+
 
 
   return (
@@ -26,13 +28,13 @@ const Comment = ({
 
         <div className="col-span-2 row-start-1 md:col-span-1 md:col-start-2">
           <CommentHeader
-            username={username}
-            avatar={avatar}
+            username={user.username}
+            avatar={user.image.png}
             timestamp={createdAt}
           />
         </div>
 
-        <CommentActions username={user.username} id={id} handleReply={onReplyClick} />
+        <CommentActions username={user.username} id={id} handleReply={onReplyClick} handleEdit={onEditClick} />
 
         <div className="col-span-2 row-start-2   md:col-start-2">
           <CommentBody content={content} replyingTo={replyingTo} />

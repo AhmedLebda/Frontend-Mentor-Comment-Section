@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useReducer } from "react";
 import data from "../../data.json"
-import { Action, ActionType, Comment, CommentActionTypes, Data, RemoveCommentPayload, ReplyCommentPayload } from "../types";
+import { Action, ActionType, Comment, CommentActionTypes, Data, RemoveCommentPayload, ReplyCommentPayload, UpdateCommentPayload } from "../types";
 
 const { comments: initialComments } = data as Data;
 
@@ -11,7 +11,7 @@ interface Context {
 
 const CommentsContext = createContext<Context>({ comments: initialComments, dispatch: () => null })
 
-function updateReplies(comments: Comment[], action: Action<CommentActionTypes.ReplyComment, ReplyCommentPayload>): Comment[] {
+function addReply(comments: Comment[], action: Action<CommentActionTypes.ReplyComment, ReplyCommentPayload>): Comment[] {
     return comments.map(comment => {
         // Check if the current comment is the one we're replying to
         if (comment.id === action.payload.id) {
@@ -25,7 +25,28 @@ function updateReplies(comments: Comment[], action: Action<CommentActionTypes.Re
         if (comment.replies) {
             return {
                 ...comment,
-                replies: updateReplies(comment.replies, action),
+                replies: addReply(comment.replies, action),
+            };
+        }
+
+        return comment;
+    });
+}
+function updateComment(comments: Comment[], action: Action<CommentActionTypes.UpdateComment, UpdateCommentPayload>): Comment[] {
+    return comments.map(comment => {
+        // Check if the current comment is the one we're replying to
+        if (comment.id === action.payload.id) {
+            return {
+                ...comment,
+                content: action.payload.content,
+            };
+        }
+
+        // If the comment has replies, recursively update them
+        if (comment.replies.length) {
+            return {
+                ...comment,
+                replies: updateComment(comment.replies, action),
             };
         }
 
@@ -63,9 +84,9 @@ const reducer = (state: Comment[], action: ActionType): Comment[] => {
         case CommentActionTypes.RemoveComment:
             return removeComment(state, action);
         case CommentActionTypes.UpdateComment:
-            return state.map(comment => comment.id === action.payload.id ? { ...comment, content: action.payload.content } : comment)
+            return updateComment(state, action)
         case CommentActionTypes.ReplyComment:
-            return updateReplies(state, action)
+            return addReply(state, action)
         default:
             return state
     }
