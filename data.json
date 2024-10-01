@@ -2,8 +2,7 @@
 	"initialUser": {
 		"id": "1",
 		"image": {
-			"png": "./images/avatars/image-juliusomo.png",
-			"webp": "./images/avatars/image-juliusomo.webp"
+			"png": "/avatars/image-juliusomo.png"
 		},
 		"username": "juliusomo"
 	},
@@ -16,8 +15,7 @@
 			"user": {
 				"id": "2",
 				"image": {
-					"png": "./images/avatars/image-amyrobson.png",
-					"webp": "./images/avatars/image-amyrobson.webp"
+					"png": "/avatars/image-amyrobson.png"
 				},
 				"username": "amyrobson"
 			},
@@ -31,8 +29,7 @@
 			"user": {
 				"id": "3",
 				"image": {
-					"png": "./images/avatars/image-maxblagun.png",
-					"webp": "./images/avatars/image-maxblagun.webp"
+					"png": "/avatars/image-maxblagun.png"
 				},
 				"username": "maxblagun"
 			},
@@ -46,8 +43,7 @@
 					"user": {
 						"id": "4",
 						"image": {
-							"png": "./images/avatars/image-ramsesmiron.png",
-							"webp": "./images/avatars/image-ramsesmiron.webp"
+							"png": "/avatars/image-ramsesmiron.png"
 						},
 						"username": "ramsesmiron"
 					},
@@ -62,8 +58,7 @@
 					"user": {
 						"id": "1",
 						"image": {
-							"png": "./images/avatars/image-juliusomo.png",
-							"webp": "./images/avatars/image-juliusomo.webp"
+							"png": "/avatars/image-juliusomo.png"
 						},
 						"username": "juliusomo"
 					},

@@ -2,7 +2,6 @@ export interface User {
 	id: string;
 	image: {
 		png: string;
-		webp: string;
 	};
 	username: string;
 }
