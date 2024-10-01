@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useContext, useReducer } from "react"
 import data from "../../data.json"
 import { Data, User } from "../types";
 
-const { currentUser: InitialCurrentUser } = data as Data;
+const { initialUser: InitialCurrentUser } = data as Data;
 
 interface ActionType {
     type: "user/changeUser",
@@ -43,6 +43,12 @@ export const useCurrentUser = () => {
             "useCurrentUser has to be used within <CurrentUserContext.Provider>"
         );
     }
+    const { currentUser, dispatch } = currentUserContext;
 
-    return currentUserContext
+    const changeUser = (user: User): void => {
+        console.log(user)
+        dispatch({ type: "user/changeUser", payload: { user } })
+    }
+
+    return { currentUser, changeUser }
 }

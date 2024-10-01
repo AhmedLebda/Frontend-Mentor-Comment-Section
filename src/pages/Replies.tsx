@@ -30,11 +30,13 @@ const Replies = () => {
     if (!comment) return <div>Comment not found</div>;
 
     return (
-        <>
+        <div className="container max-w-xl md:max-w-4xl mx-auto px-4 py-12">
+
             <Link to="/" className="font-bold text-gray-600 mb-4 block"> &lt;== Home</Link>
+            <h1 className="text-2xl font-bold text-gray-800 font-serif mb-4 italic">Replies:</h1>
             <CommentsList comments={[comment]} />
 
-        </>
+        </div>
     )
 }
 

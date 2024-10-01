@@ -1,4 +1,5 @@
 export interface User {
+	id: string;
 	image: {
 		png: string;
 		webp: string;
@@ -16,7 +17,7 @@ export interface Comment {
 	replyingTo?: string;
 }
 export interface Data {
-	currentUser: User;
+	initialUser: User;
 	comments: Comment[];
 }
 
