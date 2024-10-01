@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useReducer } from "react";
 import data from "../../data.json"
-import { Action, ActionType, Comment, CommentActionTypes, Data, RemoveCommentPayload, ReplyCommentPayload, UpdateCommentPayload } from "../types";
+import { Action, ActionType, Comment, CommentActionTypes, Data, RemoveCommentPayload, ReplyCommentPayload, UpdateCommentPayload, VoteCommentPayload } from "../types";
 
 const { comments: initialComments } = data as Data;
 
@@ -74,7 +74,20 @@ function removeComment(comments: Comment[], action: Action<CommentActionTypes.Re
             return comment;
         })
         .filter(comment => comment !== null);
+}
 
+const voteComment = (comments: Comment[], action: Action<CommentActionTypes.UpVoteComment | CommentActionTypes.DownVoteComment, VoteCommentPayload>): Comment[] => {
+    return comments.map(comment => {
+        if (comment.id === action.payload) {
+            return action.type === CommentActionTypes.UpVoteComment ?
+                { ...comment, score: comment.score + 1 }
+                : { ...comment, score: comment.score - 1 };
+        }
+        if (comment.replies) {
+            return { ...comment, replies: voteComment(comment.replies, action) };
+        }
+        return comment;
+    });
 }
 
 const reducer = (state: Comment[], action: ActionType): Comment[] => {
@@ -87,6 +100,10 @@ const reducer = (state: Comment[], action: ActionType): Comment[] => {
             return updateComment(state, action)
         case CommentActionTypes.ReplyComment:
             return addReply(state, action)
+        case CommentActionTypes.UpVoteComment:
+            return voteComment(state, action)
+        case CommentActionTypes.DownVoteComment:
+            return voteComment(state, action)
         default:
             return state
     }
@@ -124,7 +141,13 @@ export const useCommentsContext = () => {
     const replyComment = (id: Comment["id"], comment: Comment): void => {
         dispatch({ type: CommentActionTypes.ReplyComment, payload: { id, comment } })
     }
+    const voteComment = (id: Comment["id"], Action: "upVote" | "downVote"): void => {
+        const type = Action === "upVote" ?
+            CommentActionTypes.UpVoteComment :
+            CommentActionTypes.DownVoteComment
+        dispatch({ type, payload: id })
+    }
 
-    return { comments, addComment, removeComment, updateComment, replyComment }
+    return { comments, addComment, removeComment, updateComment, replyComment, voteComment }
 
 }

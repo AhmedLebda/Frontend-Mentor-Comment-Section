@@ -1,7 +1,6 @@
-import { Comment as CommentType } from "../../../types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const useCommentsList = (comments: CommentType[]) => {
+const useCommentsList = () => {
 	const [replyToCommentId, setReplyToCommentId] = useState<null | number>(
 		null
 	);
@@ -10,28 +9,19 @@ const useCommentsList = (comments: CommentType[]) => {
 		Record<number, boolean>
 	>({});
 
-	// Make all replies expanded by default
-	useEffect(() => {
-		const allExpanded = comments.reduce((acc, comment) => {
-			acc[comment.id] = true;
-			if (comment.replies.length > 0) {
-				comment.replies.forEach((reply) => {
-					acc[reply.id] = true;
-				});
-			}
-			return acc;
-		}, {} as Record<number, boolean>);
-
-		setExpandedReplies(allExpanded);
-	}, [comments]);
-
 	const handleReplyClick = (id: number) => {
 		setReplyToCommentId(id);
 		setEditCommentId(null);
 	};
 
-	const handleSubmitReply = () => {
+	const handleSubmitReply = (commentId?: number) => {
 		setReplyToCommentId(null);
+		if (commentId) {
+			setExpandedReplies((prev) => ({
+				...prev,
+				[commentId]: !prev[commentId],
+			}));
+		}
 	};
 
 	const handleEditClick = (id: number) => {

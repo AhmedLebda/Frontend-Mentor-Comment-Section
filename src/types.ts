@@ -27,12 +27,15 @@ export enum CommentActionTypes {
 	RemoveComment = "comments/removeComment",
 	UpdateComment = "comments/updateComment",
 	ReplyComment = "comments/replyComment",
+	UpVoteComment = "comments/upvoteComment",
+	DownVoteComment = "comments/downvoteComment",
 }
 
 export type AddCommentPayload = Comment;
 export type RemoveCommentPayload = Comment["id"];
 export type UpdateCommentPayload = { id: Comment["id"]; content: string };
 export type ReplyCommentPayload = { id: Comment["id"]; comment: Comment };
+export type VoteCommentPayload = Comment["id"];
 
 export interface Action<T extends CommentActionTypes, P> {
 	type: T;
@@ -43,4 +46,6 @@ export type ActionType =
 	| Action<CommentActionTypes.AddComment, AddCommentPayload>
 	| Action<CommentActionTypes.RemoveComment, RemoveCommentPayload>
 	| Action<CommentActionTypes.UpdateComment, UpdateCommentPayload>
-	| Action<CommentActionTypes.ReplyComment, ReplyCommentPayload>;
+	| Action<CommentActionTypes.ReplyComment, ReplyCommentPayload>
+	| Action<CommentActionTypes.UpVoteComment, VoteCommentPayload>
+	| Action<CommentActionTypes.DownVoteComment, VoteCommentPayload>;

@@ -23,7 +23,7 @@ const Comment = ({
     <>
       <div className=" bg-white p-4 rounded-md mb-4 grid grid-cols-2 md:grid-cols-[auto_1fr_auto] md:grid-rows-[auto_1fr] gap-3">
         <div className="row-span-2">
-          <CommentScore likes={score} />
+          <CommentScore likes={score} id={id} />
         </div>
 
         <div className="col-span-2 row-start-1 md:col-span-1 md:col-start-2">

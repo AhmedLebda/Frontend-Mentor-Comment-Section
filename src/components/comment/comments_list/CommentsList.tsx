@@ -18,7 +18,17 @@ const CommentsList = ({ comments }: { comments: CommentType[] }) => {
     handleEditClick,
     handleSubmitEdit,
     toggleReplies,
-  } = useCommentsList(comments)
+  } = useCommentsList()
+
+  function sortCommentsByScore(comments: CommentType[]): CommentType[] {
+    const sortedComments = comments.sort((a, b) => b.score - a.score);
+
+    sortedComments.forEach(comment => {
+      comment.replies = sortCommentsByScore(comment.replies);
+    });
+
+    return sortedComments;
+  }
 
   const renderComments = (comments: CommentType[], depth = 0, maxDepth = 2) => {
     return comments.map((comment) => {
@@ -59,7 +69,7 @@ const CommentsList = ({ comments }: { comments: CommentType[] }) => {
     });
   };
 
-  return <>{renderComments(comments)}</>;
+  return <>{renderComments(sortCommentsByScore(comments))}</>;
 };
 
 export default CommentsList;

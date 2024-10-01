@@ -14,7 +14,7 @@ interface AddReply {
     action: 'reply'
     id: number
     replyingTo: string
-    handleSubmitReply: () => void
+    handleSubmitReply: (commentId?: number) => void
 }
 
 interface EditComment {
@@ -54,7 +54,7 @@ const AddComment = (props: AddCommentProps) => {
             const { id, handleSubmitReply } = props
             commentObject.replyingTo = props.replyingTo
             replyComment(id, commentObject)
-            handleSubmitReply()
+            handleSubmitReply(id)
         }
         else if (props.action === 'edit') {
             const { id, handleSubmitEdit } = props
