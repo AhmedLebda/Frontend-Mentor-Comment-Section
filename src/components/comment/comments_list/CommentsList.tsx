@@ -69,6 +69,8 @@ const CommentsList = ({ comments }: { comments: CommentType[] }) => {
     });
   };
 
+  if (!comments.length) return <h1 className="my-8 px-4">Looks like nobody has commented yet! Feel free to share your thoughts!</h1>
+
   return <>{renderComments(sortCommentsByScore(comments))}</>;
 };
 

@@ -3,6 +3,7 @@ import { useCommentsContext } from "../contexts/CommentsProvider";
 import { Comment as CommentType } from "../types";
 import CommentsList from "../components/comment/comments_list/CommentsList";
 import { MoveLeft } from "lucide-react";
+import PageNotFound from "./PageNotFound";
 
 const Replies = () => {
     const { id } = useParams<{ id: string }>();
@@ -28,7 +29,7 @@ const Replies = () => {
 
     const comment = findComment(comments, Number(id))
 
-    if (!comment) return <div>Comment not found</div>;
+    if (!comment) return <PageNotFound />;
 
     return (
         <div className="container max-w-xl md:max-w-4xl mx-auto px-4 py-12">

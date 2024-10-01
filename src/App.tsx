@@ -5,12 +5,13 @@ import {
 import MainLayout from "./pages/MainLayout";
 import Home from "./pages/Home";
 import Replies from "./pages/Replies";
+import PageNotFound from "./pages/PageNotFound";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <h1>Something Went Wrong</h1>,
+    errorElement: <PageNotFound />,
     children: [
       {
         index: true,
