@@ -85,7 +85,7 @@ const AddComment = (props: AddCommentProps) => {
         <form onSubmit={handleSubmit(submit)} className=" bg-white p-4  rounded-md mb-4 grid grid-cols-2 md:grid-cols-[auto_1fr_auto] items-start gap-6">
             <Avatar src={currentUser.image.png} alt={currentUser.username} />
             <div className="col-span-2 row-start-1 md:col-span-1 md:col-start-2">
-                <textarea defaultValue={props.action === "edit" ? props.content : undefined} {...register("comment", { required: true })} id="comment" placeholder={`Add a ${props.action === 'comment' ? "Comment" : "Reply"}...`} rows={4} className="border p-2 rounded-md  w-full"></textarea>
+                <textarea autoFocus defaultValue={props.action === "edit" ? props.content : undefined} {...register("comment", { required: true })} id="comment" placeholder={`Add a ${props.action === 'comment' ? "Comment" : "Reply"}...`} rows={4} className="border p-2 rounded-md  w-full"></textarea>
                 {errors["comment"] && <span>This field is required</span>}
             </div>
             <div className="justify-self-end flex flex-col gap-4">
