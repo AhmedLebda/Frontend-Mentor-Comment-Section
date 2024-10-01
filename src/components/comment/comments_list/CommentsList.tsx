@@ -59,7 +59,7 @@ const CommentsList = ({ comments }: { comments: CommentType[] }) => {
               )}
             </div>
           )}
-          {depth >= maxDepth && hasReplies && !isExpanded && (
+          {depth >= maxDepth && hasReplies && (
             <Link to={`/${comment.id}`} className="block mb-2 text-sm font-bold text-blue-800">
               View More Replies
             </Link>

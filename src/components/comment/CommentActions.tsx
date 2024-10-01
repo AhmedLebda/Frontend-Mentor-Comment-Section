@@ -1,3 +1,4 @@
+import { Pencil, Reply, Trash } from "lucide-react";
 import { useCommentsContext } from "../../contexts/CommentsProvider";
 import { useCurrentUser } from "../../contexts/CurrentUser"
 
@@ -9,13 +10,21 @@ const CommentActions = ({ username, id, handleReply, handleEdit }: CommentAction
 
 
     if (currentUser.username !== username)
-        return <button className="font-bold text-blue-900" onClick={() => handleReply(id)}>Reply</button>
+        return <button className="font-bold text-blue-900 flex items-center gap-2" onClick={() => handleReply(id)}>
+            <Reply size={20} />
+            <span>Reply</span>
+
+        </button>
 
 
     return (
         <div className="flex items-center md:items-start justify-end gap-6">
-            <button className="font-bold text-red-600" onClick={() => removeComment(id)}>Delete</button>
-            <button className="font-bold text-blue-900" onClick={() => handleEdit(id)}>Edit</button>
+            <button className="font-bold text-red-600 flex items-center gap-2" onClick={() => removeComment(id)}>
+                <Trash size={16} />
+                <span>Delete</span></button>
+            <button className="font-bold text-blue-900 flex items-center gap-2" onClick={() => handleEdit(id)}>
+                <Pencil size={16} />
+                <span>Edit</span></button>
         </div>)
 }
 

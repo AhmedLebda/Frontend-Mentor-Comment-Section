@@ -46,7 +46,6 @@ export const useCurrentUser = () => {
     const { currentUser, dispatch } = currentUserContext;
 
     const changeUser = (user: User): void => {
-        console.log(user)
         dispatch({ type: "user/changeUser", payload: { user } })
     }
 
